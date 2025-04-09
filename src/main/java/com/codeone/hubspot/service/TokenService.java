@@ -1,4 +1,4 @@
-package com.coneone.hubspot.service;
+package com.codeone.hubspot.service;
 
 import org.springframework.stereotype.Service;
 

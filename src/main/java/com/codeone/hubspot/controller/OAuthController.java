@@ -1,6 +1,6 @@
-package com.coneone.hubspot.controller;
+package com.codeone.hubspot.controller;
 
-import com.coneone.hubspot.service.TokenService;
+import com.codeone.hubspot.service.TokenService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;

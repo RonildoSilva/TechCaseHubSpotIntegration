@@ -1,4 +1,4 @@
-package com.coneone.hubspot;
+package com.codeone.hubspot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
