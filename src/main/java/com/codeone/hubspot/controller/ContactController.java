@@ -35,7 +35,7 @@ public class ContactController {
     public ResponseEntity<Object> create(@RequestBody Map<String, Object> contactDetails) {
         if (!tokenService.isTokenAvailable()) {
             return ResponseEntity.status(
-                    HttpStatus.UNAUTHORIZED).body(Map.of("error", "Credenciais inválidas ou ausentes.")
+                    HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid or missing credentials.")
             );
         }
 

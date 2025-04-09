@@ -84,11 +84,11 @@ public class OAuthController {
         if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
             String accessToken = (String) response.getBody().get("access_token");
             tokenService.saveToken(accessToken);
-            result.put("message", "Token de acesso recebido.");
+            result.put("message", "Access token received.");
             result.put("access_token", accessToken);
         }
         else {
-            result.put("message", "Falha ao recuperar token de access");
+            result.put("message", "Failed to retrieve access token");
         }
         return ResponseEntity.ok(result);
     }
