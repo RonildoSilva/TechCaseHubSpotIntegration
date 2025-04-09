@@ -30,6 +30,12 @@ public class OAuthController {
     @Value("${hubspot.redirect-uri}")
     private String redirectUri;
 
+    @Value("${hubspot.oauth.token.uri}")
+    private String oauthTokenUri;
+
+    @Value("${hubspot.authorize.uri}")
+    private String oauthAuthorizeUri;
+
     private final TokenService tokenService;
     private final RestTemplate restTemplate;
 
@@ -40,7 +46,7 @@ public class OAuthController {
 
     @GetMapping("/oauth/authorize")
     public ResponseEntity<String> getAuthorizationUrl() {
-        URI uri = UriComponentsBuilder.fromUriString("https://app.hubspot.com/oauth/authorize")
+        URI uri = UriComponentsBuilder.fromUriString(oauthAuthorizeUri)
                 .queryParam("client_id", clientId)
                 .queryParam("redirect_uri", redirectUri)
                 .queryParam("scope", "crm.objects.contacts.write crm.objects.contacts.read")
@@ -53,7 +59,7 @@ public class OAuthController {
 
     @GetMapping("/oauth/callback")
     public ResponseEntity<Map<String, Object>> oauthCallback(@RequestParam String code) {
-        URI tokenUri = URI.create("https://api.hubapi.com/oauth/v1/token");
+        URI tokenUri = URI.create(oauthTokenUri);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -78,11 +84,11 @@ public class OAuthController {
         if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
             String accessToken = (String) response.getBody().get("access_token");
             tokenService.saveToken(accessToken);
-            result.put("message", "Access token received.");
+            result.put("message", "Token de acesso recebido.");
             result.put("access_token", accessToken);
         }
         else {
-            result.put("message", "Failed to retrieve access token");
+            result.put("message", "Falha ao recuperar token de access");
         }
         return ResponseEntity.ok(result);
     }
