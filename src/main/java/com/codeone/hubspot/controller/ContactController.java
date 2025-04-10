@@ -1,20 +1,18 @@
 package com.codeone.hubspot.controller;
 
 import com.codeone.hubspot.dto.ContactDTO;
+import com.codeone.hubspot.service.ContactService;
 import com.codeone.hubspot.service.TokenService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -25,45 +23,33 @@ public class ContactController {
     private String hubspotOAuthURI;
 
     private final TokenService tokenService;
-    private final RestTemplate restTemplate;
+    private final ContactService contactService;
 
-    public ContactController(TokenService tokenService, RestTemplate restTemplate) {
+    public ContactController(TokenService tokenService, ContactService contactService) {
         this.tokenService = tokenService;
-        this.restTemplate = restTemplate;
+        this.contactService = contactService;
     }
 
     @PostMapping("/contact")
-    public ResponseEntity<Object> create(@RequestBody ContactDTO contactDetails) {
+    public ResponseEntity<Object> create(@RequestBody ContactDTO contactDTO) {
         if (!tokenService.isTokenAvailable()) {
-            return ResponseEntity.status(
-                    HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid or missing credentials.")
-            );
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "Invalid or missing credentials."));
         }
-
-        URI hubSpoturi = URI.create(hubspotOAuthURI);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(tokenService.getToken());
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("properties", contactDetails);
-
-        HttpEntity<Map<String, Object>> request = new HttpEntity<>(requestBody, headers);
 
         try {
-            ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
-                    hubSpoturi,
-                    HttpMethod.POST,
-                    request,
-                    new ParameterizedTypeReference<>() {}
-            );
-
-            return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
-        } catch (HttpStatusCodeException e) {
-            return ResponseEntity.status(e.getStatusCode()).body(e.getResponseBodyAsString());
-        } catch (RestClientException restClientException){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(restClientException.getMessage());
+            ResponseEntity<Map<String, Object>> response = contactService.create(contactDTO);
+            return ResponseEntity.
+                    status(response.getStatusCode()).
+                    body(response.getBody());
+        } catch (HttpStatusCodeException httpStatusCodeException) {
+            return ResponseEntity.
+                    status(httpStatusCodeException.getStatusCode()).
+                    body(httpStatusCodeException.getResponseBodyAsString());
+        } catch (RestClientException restClientException) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
+                    body(restClientException.getMessage());
         }
     }
+
 }
