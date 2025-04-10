@@ -1,5 +1,6 @@
 package com.codeone.hubspot.controller;
 
+import com.codeone.hubspot.dto.ContactDTO;
 import com.codeone.hubspot.service.TokenService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,8 +32,8 @@ public class ContactController {
         this.restTemplate = restTemplate;
     }
 
-    @PostMapping("/contacts")
-    public ResponseEntity<Object> create(@RequestBody Map<String, Object> contactDetails) {
+    @PostMapping("/contact")
+    public ResponseEntity<Object> create(@RequestBody ContactDTO contactDetails) {
         if (!tokenService.isTokenAvailable()) {
             return ResponseEntity.status(
                     HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid or missing credentials.")

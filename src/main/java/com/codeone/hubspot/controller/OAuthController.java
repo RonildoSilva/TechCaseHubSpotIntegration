@@ -85,7 +85,6 @@ public class OAuthController {
             String accessToken = (String) response.getBody().get("access_token");
             tokenService.saveToken(accessToken);
             result.put("message", "Access token received.");
-            result.put("access_token", accessToken);
         }
         else {
             result.put("message", "Failed to retrieve access token");
