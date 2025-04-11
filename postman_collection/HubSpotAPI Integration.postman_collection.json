@@ -1,0 +1,165 @@
+{
+	"info": {
+		"_postman_id": "93dc05a4-9dbc-4afa-9b59-313beff2d8b2",
+		"name": "HubSpotAPI Integration",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1696760"
+	},
+	"item": [
+		{
+			"name": "Authorize",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{host}}/oauth/authorize",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"oauth",
+						"authorize"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Callback",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{host}}/oauth/callback?code=na1-5753-ee40-46b8-8d9a-f85b443f16ff",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"oauth",
+						"callback"
+					],
+					"query": [
+						{
+							"key": "code",
+							"value": "na1-5753-ee40-46b8-8d9a-f85b443f16ff"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Contact",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"marge.simpson@example.com\",\r\n  \"firstname\": \"Marge\",\r\n  \"lastname\": \"Simpson\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}/contact",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"contact"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Webhook",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-HubSpot-Signature",
+						"value": "UtksGUn7YRgw7G0Ey9BfKj4408ARyUGKAi3nFxF+c8I=",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"appId\":10669141,\"eventId\":100,\"subscriptionId\":3442836,\"portalId\":49651156,\"occurredAt\":1744332146137,\"subscriptionType\":\"contact.creation\",\"attemptNumber\":0,\"objectId\":123,\"changeSource\":\"CRM\",\"changeFlag\":\"NEW\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}/webhook",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"webhook"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "external_host",
+			"value": "https://8341-2804-29b8-5057-1406-1b2e-ad04-7b21-c30b.ngrok-free.app/",
+			"type": "string"
+		}
+	]
+}

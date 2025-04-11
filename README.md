@@ -83,7 +83,8 @@ A estrutura da aplicação busca seguir os princípios do SOLID:
 
     ![Exemplo de url válida para o webhook](./readme_imgs/webhook_config.png)
 
-    A aplicação irá rodar normalmente tanto local, quanto externamente. Existe uma configuração no `CorsConfig` que permite que qualquer endereço no formado `ngrok` funcione bem (`.allowedOriginPatterns("https://*.ngrok-free.app")`)
+    A aplicação irá rodar normalmente tanto local, quanto externamente. Existe uma configuração no `CorsConfig` que permite que qualquer endereço no formado `ngrok` funcione bem (`.allowedOriginPatterns("https://*.ngrok-free.app")`).
+    Adicionalmente, dependendo da versão no `ngrok`, essa url pode mudar a cada exposição.
 
     5. Exemplo animado da execução do projeto:
 
@@ -171,6 +172,14 @@ porém, é necessário apenas o nome e o email (que funciona como chave), então
 
 ---
 
+## Docker
+Caso queira executar a aplicação via Docker, executar o segunte comando:
+    ```bash
+    docker build -t hubspot-app .
+    docker run -p 8080:8080 hubspot-app
+    ````
+# Postman
+Como mencionado, é preferível utilizar o postman para tornar o fluxo de uso mais ágil. Um arquivo com o postman collection da API encontra-se na pasta: `postman_collection`
 ## Desenvolvedor
 
 Desenvolvido por: Ronildo Silva.
