@@ -39,15 +39,18 @@ public class WebhookController {
         logger.info("Webhook received:");
         logger.info(payload);
 
-        return ResponseEntity.ok(Map.of("message", "Webhook received successfully."));
+        return ResponseEntity.status(HttpStatus.OK).
+                body(Map.of("message", "Webhook received successfully."));
     }
 
     private boolean isValidSignature(
             String payload, String signature) {
         try {
-            String algo = "HmacSHA256";
-            Mac mac = Mac.getInstance(algo);
-            SecretKeySpec secretKeySpec = new SecretKeySpec(webhookSecret.getBytes(StandardCharsets.UTF_8), algo);
+            String algorithm = "HmacSHA256";
+            Mac mac = Mac.getInstance(algorithm);
+            SecretKeySpec secretKeySpec =
+                    new SecretKeySpec(webhookSecret.getBytes(StandardCharsets.UTF_8), algorithm);
+
             mac.init(secretKeySpec);
             byte[] hash = mac.doFinal(payload.getBytes(StandardCharsets.UTF_8));
             String expectedSignature = Base64.getEncoder().encodeToString(hash);
