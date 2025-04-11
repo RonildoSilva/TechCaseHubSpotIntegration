@@ -55,7 +55,8 @@ public class WebhookController {
             byte[] hash = mac.doFinal(payload.getBytes(StandardCharsets.UTF_8));
             String expectedSignature = Base64.getEncoder().encodeToString(hash);
             return expectedSignature.equals(signature);
-        } catch (Exception e) {
+        } catch (Exception exception) {
+            logger.error(exception.getMessage());
             return false;
         }
     }
