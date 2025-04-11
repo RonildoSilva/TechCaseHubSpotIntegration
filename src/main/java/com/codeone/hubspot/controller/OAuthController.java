@@ -2,6 +2,7 @@ package com.codeone.hubspot.controller;
 
 import com.codeone.hubspot.service.TokenService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
@@ -44,17 +45,20 @@ public class OAuthController {
         this.tokenService = tokenService;
     }
 
-    @GetMapping("/oauth/authorize")
-    public ResponseEntity<String> getAuthorizationUrl() {
+    @GetMapping(value = "/oauth/authorize", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Map<String, String>> getAuthorizationUrl(HttpServletRequest request) {
+        String baseUrl = request.getRequestURL().toString().replace(request.getRequestURI(), "");
+        String dynamicRedirectUri = baseUrl + "/oauth/callback";
+
         URI uri = UriComponentsBuilder.fromUriString(oauthAuthorizeUri)
                 .queryParam("client_id", clientId)
-                .queryParam("redirect_uri", redirectUri)
+                .queryParam("redirect_uri", dynamicRedirectUri)
                 .queryParam("scope", "crm.objects.contacts.write crm.objects.contacts.read")
                 .queryParam("response_type", "code")
                 .build()
                 .toUri();
 
-        return ResponseEntity.ok(uri.toString());
+        return ResponseEntity.ok(Map.of("authorization_url", uri.toString()));
     }
 
     @GetMapping("/oauth/callback")

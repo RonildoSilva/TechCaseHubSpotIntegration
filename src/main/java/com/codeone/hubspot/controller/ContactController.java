@@ -47,7 +47,8 @@ public class ContactController {
                     status(httpStatusCodeException.getStatusCode()).
                     body(httpStatusCodeException.getResponseBodyAsString());
         } catch (RestClientException restClientException) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
+            return ResponseEntity.
+                    status(HttpStatus.INTERNAL_SERVER_ERROR).
                     body(restClientException.getMessage());
         }
     }
