@@ -180,6 +180,12 @@ Caso queira executar a aplicação via Docker, executar o segunte comando:
     ````
 # Postman
 Como mencionado, é preferível utilizar o postman para tornar o fluxo de uso mais ágil. Um arquivo com o postman collection da API encontra-se na pasta: `postman_collection`
+
+# Pontos de melhoria
+- Testes unitários na camada web. É um pouco mais desafiador que na camada de serviços, pois os Mocks do serviço de autenticação requer uma elaboração maior e garantia de que o mock em sim, obedeça o protocolo da API externa. Como não temos respositório neste case, os testes iriam ter uma cobertura pequena. À medida que essa prova de conceito for evoluindo, é importante considerar essa opção.
+- Monitoramento de API. Visando o crescimento desse projeto, é interesssante considerar o monitoramento da saúde da API. Eu geralmente opto pelo prometheus e grafana.
+- 
+
 ## Desenvolvedor
 
 Desenvolvido por: Ronildo Silva.
